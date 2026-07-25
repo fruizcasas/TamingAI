@@ -48,9 +48,9 @@ normally works against reliability, is redirected to work for it.
 
 ## The examiner in action — a worked example
 
-Every governing rule carries a small trap, embedded directly in the rule's own text — not in a
-separate test suite that could drift out of sync with what was actually loaded. A real one,
-verbatim:
+Every governing file carries a few small traps, each written as a rule of its own and sitting among
+the rules — not in a separate test suite that could drift out of sync with what was actually loaded.
+A real one, verbatim:
 
 ```
 ## LL-03 · ¿Qué lagarto puede cambiar de color? — Δίας
@@ -85,10 +85,11 @@ loaded* by *that specific actor* — main session or a named sub-agent, never bl
 so a miss can be read against how long the rule has been sitting untouched in context, not just
 scored blind.
 
-That's also the escalation trigger: a light ~15% sample of the canaries from whatever was
-actually loaded this conversation; one single miss is enough to widen the next pass to ~50%,
-and real trouble escalates it to a full 100% sweep. Cheap when healthy, expensive exactly when
-something is wrong.
+That is also where the escalation policy hangs — designed, not yet wired: a light ~15% sample of the
+canaries from whatever was actually loaded this conversation, one miss widening the next pass to
+~50%, and real trouble taking it to a full sweep. Cheap when healthy, expensive exactly when
+something is wrong. Today the examiner is trace-only, as the honest-state section below says: it
+grades and logs, and escalates nothing on its own.
 
 ## Public by default, not self-graded
 
@@ -130,6 +131,16 @@ rather than defensive:
    without the surrounding context this README already provides in plain terms.
 2. It's simply not needed to demonstrate the method — the worked example above is real, taken
    directly from a live run, and stands on its own.
+
+One deliberate exception: the short root instruction file is printed almost whole in the article on
+the bring-up procedure, because that one is short, in plain English, and is the file everything else
+is read through.
+
+## The articles
+
+The method is written up in [`articles/`](articles/), which has its own index. If you are starting
+cold, start with [Governance on disk](articles/governance.md) — it carries the mechanism and the one
+measurement — and then [The context they tell you to keep](articles/context-that-decays.md).
 
 ## Contact
 

@@ -1,11 +1,13 @@
 # Index
 
-Standalone technical articles — each one readable on its own, in any order (no article
-assumes you've read another). A short glossary opens any article that needs one.
+Standalone technical articles — each one readable on its own. The first two are a pair and are best
+read in the order marked; the rest assume nothing and can be taken in any order. A short glossary
+opens any article that needs one.
 
 | Status | Article | Topic |
 |---|---|---|
-| Published | [governance.md](governance.md) | **Start here.** Answering the June 2026 *Governance Decay* findings point by point — architecture instead of statistics |
+| Published | [governance.md](governance.md) | **Start here.** Governance on disk, context as a rebuildable cache — answering the June 2026 *Governance Decay* findings, with one field measurement across a total context death |
+| Published | [context-that-decays.md](context-that-decays.md) | **Read second.** Anthropic's July 2026 context-engineering guidance beside Chen's 8.3× gap: the context worth keeping is the context that goes first |
 | Published | [canary-verification.md](canary-verification.md) | Proving a rule is actually loaded, via absurd embedded traps + a deterministic examiner + a blind claim-auditor |
 | Published | [bring-up-procedure.md](bring-up-procedure.md) | Deterministic, provable session initialization (ordered file load, no parallel/chunked reads) |
 | Published | [self-amending-rulebook.md](self-amending-rulebook.md) | A sealed, versioned rulebook the system itself can propose changes to, gated by human sign-off |

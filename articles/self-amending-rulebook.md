@@ -20,13 +20,17 @@ actually supposed to obey.
 The fix is to treat rule-changes as a small number of named, deliberate gestures — not an
 open-ended "edit the file":
 
-1. **Legislate** — a rule is born, from an observed failure or a direct instruction. The
-   act of recording it *is* the approval — there's no separate rubber-stamp step, but there
-   is exactly one entry point, and it always carries a date and a state.
+1. **Legislate** — a rule is born, from an observed failure or a direct instruction. Recording it
+   is always a human act: the machine may draft the wording and may propose the rule, but it never
+   enters one. The act of recording *is* the approval — there's no separate rubber-stamp step, but
+   there is exactly one entry point, it belongs to the owner, and it always carries a date and a
+   state. "Self-amending" in the title means a rulebook the system may propose changes to, never
+   one that amends itself.
 2. **Watch** — a standing, automatic check runs on every edit to a governing file, regardless
    of who triggered it — nobody has to remember to invoke it.
-3. **Periodic audit** — the whole rulebook gets swept on a schedule, not just individual
-   changes: which rules are still actually relevant, which have quietly become dead weight.
+3. **Periodic audit** — the whole rulebook gets swept, not just individual changes: which rules
+   are still actually relevant, which have quietly become dead weight. The sweep is convened by
+   the owner rather than fired by a timer; nothing here runs itself.
 4. **Derogate** — a rule that's gone stale is moved out of the active set, with a dated reason
    attached, rather than being silently deleted. The history isn't erased, it's marked
    retired.

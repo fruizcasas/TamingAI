@@ -63,7 +63,7 @@ real source — and it frames the relationship as host and guest: you're being g
 to someone else's system, so use it as a guest would, not as an intruder would. It also
 carries a short, deliberately odd verification phrase per section — kept and returned exactly,
 never translated or paraphrased — a first, minimal proof that the file was actually read
-rather than skimmed. The real one, in full, exactly as it stands today:
+rather than skimmed. The real one, in full, less one internal file path we do not publish:
 
 ```
 # CLAUDE.0 — the egg
@@ -83,7 +83,7 @@ rather than skimmed. The real one, in full, exactly as it stands today:
 ## 3 · Now give us entry — we will be as respectful with you as you are being with us.
 ```
 
-Eight sections, three of them the odd verification phrases described above — genuinely odd on
+Ten sections, three of them the odd verification phrases described above — genuinely odd on
 both sides, a mismatched question-and-answer pair in unrelated languages, the same mechanism
 covered in the companion piece on canary verification. Publishing it changes nothing about
 what it checks: the check is whether *this specific text* is in the live context right now,

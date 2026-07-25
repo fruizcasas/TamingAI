@@ -1,6 +1,7 @@
 # The context they tell you to keep is the context that decays fastest
 
-Two documents, four weeks apart, neither citing the other.
+Two documents, four weeks apart. The later one does not cite the earlier, and the earlier could not
+have cited the later.
 
 On 24 July 2026, Anthropic published *The new rules of context engineering for Claude 5 generation
 models*, by Thariq Shihipar. Its advice about what belongs in a Skill is this:
@@ -35,8 +36,8 @@ the model already has costs nothing by construction — you are not removing a c
 a redundant statement of one.
 
 Which is the same finding as Chen's, seen from the other side. His hard safety norms barely decay (+6
-points) because the model refuses those anyway; his soft organizational policies collapse (+50) because
-nothing in training supplied them. Anthropic measured that generic rules are safe to delete. Chen
+points) — he attributes that to the model refusing them intrinsically, so the loss does not show — while
+his soft organizational policies collapse (+50), because nothing in training supplied them. Anthropic measured that generic rules are safe to delete. Chen
 measured that arbitrary rules are the ones that vanish. Those are two views of one fact: **a rule's value
 and its fragility have the same source — whether the model could have produced it unaided.**
 
@@ -111,8 +112,8 @@ live on disk" — because several of these documents already half-say that. Skil
 References in code. Rich artifacts. The direction of travel is already outward from the context window.
 
 The gap is this: **nothing in that guidance offers a way to check whether the context you carefully
-engineered is still there.** Not in the context-engineering post, not in the engineering guide, not in the
-field guide. The advice covers what to load and when to load it. It does not cover how to find out that
+engineered is still there.** Not in the context-engineering post, not in the engineering guide on context
+engineering, and not in the companion field guide to prompting the newest models. The advice covers what to load and when to load it. It does not cover how to find out that
 something you loaded is no longer present — which, given that the same guide warns about losing "subtle but
 critical context whose importance only becomes apparent later", is the natural next question.
 
@@ -131,8 +132,9 @@ One thing we should be clear about, since it would be easy to imply otherwise: t
 diagnosis on top of that check is already Anthropic's. Their guidance on dynamic workflows recommends
 "orchestrating separate Claude subagents with their own context windows and focused, isolated goals" and,
 specifically, "a list of rules that must be checked by verifier agents — one verifier per rule". That is
-the right pattern and it ships today. What we are adding is not the mechanism but its subject: pointing
-verification at the presence of the governance itself.
+the right pattern and it ships today. What we would add is not the mechanism but its subject: pointing
+verification at the presence of the governance itself. That part is designed and not yet built — the
+companion piece says plainly which layers run today and which do not.
 
 ## The one recommendation we would qualify
 
