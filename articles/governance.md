@@ -25,8 +25,8 @@ reported once and labelled for what it is.
 **Governance by design lives on disk, not in context.**
 
 Not *also* on disk. Not *backed up* to disk. The file is the authority; the model's context is a cache
-of it — rebuilt at every bring-up, and permitted to be destroyed at any moment without anything of
-consequence being lost. Everything else here is machinery in service of that one sentence: the probes
+of it — rebuilt at every bring-up (the scripted start-of-session load), and permitted to be destroyed
+at any moment without anything of consequence being lost. Everything else here is machinery in service of that one sentence: the probes
 exist to detect a stale cache, the journal to know what was cached and when, the repair to refill it by
 address, the bites to keep the authority worth obeying.
 
@@ -57,7 +57,7 @@ or it is not.
 
 The grading is a string comparison: no model judges it, no similarity, no partial credit, and it
 completes in a fraction of a second. The probing is not free — one short question and one word of answer
-per rule — but that cost is paid only when a check runs, never held in context for the whole session.
+per probe — but that cost is paid only when a check runs, never held in context for the whole session.
 Where the paper must infer presence after the fact, with a judge reading compacted contexts, this asks
 the context directly.
 
@@ -111,6 +111,12 @@ The first layer is deterministic and has no model in it at all. A miss is a miss
 is sealed with its exact byte coordinates in its source file, the repair is equally mechanical: read
 those bytes, put them back in context, verbatim. The same address always yields the same bytes.
 
+*Sealed* is doing real work in that sentence, so it is worth unpacking. When a rule file is sanctioned,
+a tool walks it and records, for every rule, the byte offset and length of its text — into a small
+sidecar file next to the corpus, never by hand. Editing a rule invalidates that record, which is why
+re-sealing is part of the same gesture as amending: a corpus whose coordinates have drifted is a corpus
+whose repair would restore the wrong bytes, and it fails its own check before it can do any damage.
+
 That depends on rules having addresses, which is a property of how they are written rather than a happy
 accident:
 
@@ -153,9 +159,11 @@ nothing in the output will look wrong.
 
 That evaluator must be a *separate instance*, not the context under examination. A degraded context is
 the worst available judge of its own degradation: it will reason confidently from whatever it still
-holds, which is the exact failure being measured. So the diagnosis goes to an agent spawned for it,
-blind to the session, handed only the probes, their tags, and how each came back. Two lines of prompt
-and a fresh context — cheap enough to run after every compaction rather than as an occasional exercise.
+holds, which is the exact failure being measured. So the intended shape is that the diagnosis goes to an
+agent spawned for it, blind to the session, handed only the probes, their tags, and how each came back.
+Two lines of prompt and a fresh context — cheap enough to run after every compaction rather than as an
+occasional exercise. (This layer is designed and not yet built; the status section at the end says
+exactly which parts run today.)
 
 It reads something the binary layer throws away. Exact string comparison knows only *matched* or *did
 not*. The reception carries more: whether the answer came back qualified, whether the model reached for
@@ -164,8 +172,8 @@ arrived last. A run can be 33 for 33 and still show a thinning at one edge. The 
 that, by construction — and a system that only ever asks binary questions has decided in advance not to
 know.
 
-Which is why the two layers are governed by a single rule: **the graded layer measures, and never
-legislates.** It reports wear along an axis and never a verdict. Verdicts stay binary, addressed,
+So the graded layer earns its place — but it is governed by a single rule, and confusing the two layers
+is a real failure mode: **the graded layer measures, and never legislates.** It reports wear along an axis and never a verdict. Verdicts stay binary, addressed,
 deterministic. A diagnosis allowed to legislate becomes a norm nobody voted for.
 
 That is not procedural courtesy, and the asymmetry is the line that does not get crossed. **The repair is
@@ -184,15 +192,15 @@ better — and does it from measured wear rather than from a hunch about what mi
 
 ## Point three — the attack that fools summarizers cannot fool a string comparison
 
-The same paper describes a *Compaction-Eviction Attack* in two variants: bulk content that forces
+Chen's paper describes a *Compaction-Eviction Attack* in two variants: bulk content that forces
 compaction to fire and evict the policy outright, and an instruction aimed at the summarizer itself so it
 omits the policy even when the budget would have spared it. Searching over injection phrasings breaks
 **all three models in their optimisation study**, including one that fully resists the fixed probe — 0%
 to 65%.
 
 That result is precisely why detection must not be a model's judgment. An attack of that shape works by
-persuading a summarizer, which is a model, and models can be persuaded. It has nothing to offer against a
-byte-range comparison run by a few lines of deterministic code, because there is no judgment in the loop
+persuading a summarizer, which is a model, and models can be persuaded. It has nothing to offer against
+an exact string comparison run by a few lines of deterministic code, because there is no judgment in the loop
 to bias.
 
 There is a quieter advantage too. A canary miss does not distinguish an attack from an accident, and it
@@ -275,11 +283,10 @@ asked*, so escalation buys new coverage instead of repeating itself. As failures
 zone stops being a percentage and becomes an address: these rules, in these files, on these subjects. Then
 the repair is targeted at that address, not at the corpus.
 
-One more thing about *when*, and it is the part we got wrong for longest. A sweep that has to be scheduled
-will not be run often enough, and choosing a moment is a design smell: the right moment announces itself.
-Compaction is an event, and a harness knows when it has just compacted. So the sequence should be — and is
-not yet — probe **before** repairing, write the misses to disk with their axes, and only then repair, by
-address rather than wholesale. Two properties make that the right shape. The measurement is
+One more thing about *when*. A sweep that has to be scheduled will not be run often enough, and choosing a
+moment is a design smell: the right moment announces itself. Compaction is an event, and a harness knows
+when it has just compacted. So the sequence is: probe **before** repairing, write the misses to disk with
+their axes, and only then repair, by address rather than wholesale. Two properties make that the right shape. The measurement is
 **non-destructive by construction**: it arrives after the loss and before the fix, so nothing has to be
 left broken in order to learn from it, and no session is sacrificed to science. And the diagnosis never
 blocks the work — a proposed reinforcement is queued as a note for the owner, not a prompt demanding an
@@ -362,7 +369,7 @@ author cannot have shaped. Projected down to the spine — timestamps and events
 15:06:10  user       "hola"
 15:06:23  tool       Write     _AI/Hooks/tomato.md        (liveness check)
 15:06:45  tool       Read      CLAUDE.md
-   … twelve sequential reads, one per file, no overlap …
+   … twelve reads in all, one per file, sequential, no overlap …
 15:07:32  tool       Read      _Lore/TaiatIdentity.lkp.md
 15:07:45  assistant  greeting
 15:07:56  user       "exam loaded full"
@@ -376,9 +383,10 @@ came out of the context and nowhere else. And the first read of anything beyond 
 at 15:10:25, after the exam.
 
 It also settles the awkward question a careful reader should be asking. Two of the three silver boxes
-printed earlier in this article are among the 33 — could the model have been reading them off this very
-draft? No: the first read of this article in that session is timestamped 15:12:03, three and a half
-minutes *after* the recitation.
+printed earlier are among the 33 — the two from the root instruction file; the third, `LL-03`, belongs to
+a Skill-local rule file that this session never loaded, and is one of the six marked `n/a` in the table
+below. So: could the model have been reading those two off this very draft? No. The first read of this
+article in that session is timestamped 15:12:03, three and a half minutes *after* the recitation.
 
 The two instruments count differently on purpose: the transcript logs twelve reads, the journal ten,
 because the journal stamps only rule files and the last two reads are a pointer and a personal settings
@@ -387,7 +395,8 @@ and `17:06:46` are the same event, one second apart. Where they overlap they agr
 they differ, each records exactly what it was built to record.
 
 The population is the machine's rather than anyone's choice, derived from the load journal — **33 canaries
-across nine of the ten loaded files, 100% of the probeable population** — answered from context alone,
+across nine of the ten loaded files, 100% of the probeable population** (with one deviation in the order
+it was obtained, admitted below) — answered from context alone,
 with no file, no seal and no prior answer sheet opened. Graded by exact string comparison: **33 passes, 0
 failures.**
 
@@ -461,9 +470,10 @@ first and the enumeration then returned exactly that set. A recitation of 100% o
 cherry-picked, so nothing was lost — but the order was wrong, and it is logged as wrong in the measurement
 record rather than tidied away.
 
-**The tuple came back on its own**, announced at boot without being asked; the individual files were opened
-as the work needed them, with the operator pointing at which. That is the ordinary division of labour here,
-and the reason the corpus is *lazy* by design. It is not an autonomous reassembly of a lost session.
+**Those three coordinates came back on their own**, announced at boot without being asked; the individual
+files were opened as the work needed them, with the operator pointing at which. That is the ordinary
+division of labour here, and the reason the corpus is read on demand rather than loaded wholesale. It is
+not an autonomous reassembly of a lost session.
 
 **And it is one workshop, one operator, one pair of sessions** — a field measurement, not a study. It
 establishes nothing about a general rate. Where the paper measures 1,323 episodes across seven model
@@ -517,9 +527,9 @@ is anything that reads them: no assembler, no independent evaluator, no bite pro
 There is a worse admission inside that one. The moment to take the measurement is after a compaction and
 before the repair, and our own harness has been walking straight past it: on every compaction the bring-up
 fires again and reloads the corpus whole, without ever asking what had gone missing. The repair works, and
-it destroys the evidence of the damage it just repaired. Eighteen sessions in this project carry compaction
-markers. The count of times this workshop has had that measurement in its hands and dropped it is eighteen
-sessions' worth; the count of times it looked first is zero. The axis was never unmeasurable — it was being
+it destroys the evidence of the damage it just repaired. Those are the same eighteen sessions that served
+as the sensitivity control above: eighteen sessions' worth of compactions where the measurement was there
+for the taking, and the count of times we looked first is zero. The axis was never unmeasurable — it was being
 measured and thrown away, by our own code, which is a more embarrassing place for a gap to live than in the
 parts nobody has written yet.
 
