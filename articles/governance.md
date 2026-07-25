@@ -165,6 +165,13 @@ Two lines of prompt and a fresh context — cheap enough to run after every comp
 occasional exercise. (This layer is designed and not yet built; the status section at the end says
 exactly which parts run today.)
 
+The pattern itself is not ours and should not be presented as if it were. Anthropic's own guidance on
+dynamic workflows already recommends exactly this — "orchestrating separate Claude subagents with their
+own context windows and focused, isolated goals", and, precisely, "a list of rules that must be checked
+by verifier agents — one verifier per rule" — and ships the machinery for it. What we are adding is not
+the mechanism but its *subject*: pointing that verification at the presence of governance itself, and at
+which axis of it is wearing through.
+
 It reads something the binary layer throws away. Exact string comparison knows only *matched* or *did
 not*. The reception carries more: whether the answer came back qualified, whether the model reached for
 the arithmetic instead of the word, whether it declared a gap, which zones answered readily and which
