@@ -338,9 +338,10 @@ conversation. Here it is, complete, nothing elided and nothing appended:
 {"ts": "2026-07-25 17:07:20", "filo": "_Lore/TaiatIdentity.run.md", "session": "a5bc3b1a-91ea-4de2-b88d-775d2dee5503", "agent_id": "", "agent_type": ""}
 ```
 
-Read it against the *before* journal above and the whole mechanism is visible without taking anyone's
-word for it. A different conversation identifier, so a different file. The same root instruction file
-first, at 17:06:46, before the arsenal it governs. Ten files in thirty-four seconds, sequential.
+Three things are readable off it without taking anyone's word for them. A different conversation
+identifier, so a different file — the journal for the *before* session, shown further down where the
+instrument itself is explained, carries a different one. The root instruction file went in first, at
+17:06:46, before the arsenal it governs. And ten files in thirty-four seconds, sequential.
 
 And then the file stops. There is no eleventh line — no further rule file entered before the exam.
 
@@ -365,7 +366,7 @@ reads:
 15:06:35  tool       PowerShell Remove-Item tomato.md     (liveness check)
 15:06:45  tool       Read      CLAUDE.md
 15:06:48  tool       Read      _AI/Glossary/Glossary.run.md
-   … ten sequential reads, one per file, no overlap …
+   … twelve sequential reads, one per file, no overlap …
 15:07:32  tool       Read      _Lore/TaiatIdentity.lkp.md
 15:07:45  assistant  greeting
 15:07:56  user       "exam loaded full"
@@ -385,14 +386,20 @@ them off this very draft? No: the first read of this article in that session is 
 15:12:03, three and a half minutes *after* the recitation. For future measurements those two probes
 have a second possible source, and that is noted where it belongs — but not for this one.
 
-One bookkeeping note, so the numbers do not look forged: the vendor's transcript stamps UTC, the
-workshop's journal stamps local time, two hours ahead. `15:06:45Z` and `17:06:46` are the same
-event, one second apart, recorded by two independent instruments that were never told about each
-other.
+Two bookkeeping notes, so the numbers do not look forged. The vendor's transcript stamps UTC and the
+workshop's journal stamps local time, two hours ahead: `15:06:45Z` and `17:06:46` are the same event,
+one second apart, recorded by two instruments that were never told about each other. And the two
+instruments count differently on purpose — the transcript logs **twelve** reads, the journal **ten**,
+because the journal stamps only rule files and the last two reads are a pointer and a personal
+settings file that carry no law. Where they overlap they agree to the second; where they differ, each
+is recording exactly what it was built to record.
 
 The exam was the first substantive act of the session. The population was chosen by the machine rather than by hand —
 **33 canaries across nine of the ten loaded files, 100% of the probeable population** — answered
-from context alone, with no file, no seal and no prior answer sheet opened. Graded by exact string comparison in Python:
+from context alone, with no file, no seal and no prior answer sheet opened. The population is the
+machine's rather than anyone's choice: it is derived from the load journal, not from a list. In this
+particular run it was enumerated *after* the recitation rather than before, which is a deviation from
+our own protocol and is recorded as one below. Graded by exact string comparison in Python:
 **33 passes, 0 failures.**
 
 The comparable subset is 33 of the original 39. Six probes fall out because they belong to files
